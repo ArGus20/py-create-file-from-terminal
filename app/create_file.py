@@ -3,21 +3,21 @@ import os
 from sys import argv
 
 
-def create_file(command: list) -> None:
-    last_element = len(command)
+def create_file(command: list[str]) -> None:
     if "-f" in command and "-d" in command:
-
-        if command.index("-d") < command.index("-f"):
+        d_index = command.index("-d")
+        f_index = command.index("-f")
+        if d_index < f_index:
             dir_path = os.path.join(
-                *command[command.index("-d") + 1:command.index("-f")]
+                *command[d_index + 1:f_index]
             )
-            os.makedirs(dir_path)
+            os.makedirs(dir_path, exist_ok=True)
         else:
-            dir_path = os.path.join(*command[command.index("-d") + 1:])
-            os.makedirs(dir_path)
+            dir_path = os.path.join(*command[d_index + 1:])
+            os.makedirs(dir_path, exist_ok=True)
 
     elif "-d" in command:
-        dir_path = os.path.join(*command[command.index("-d") + 1:last_element])
+        dir_path = os.path.join(*command[command.index("-d") + 1:])
         os.makedirs(dir_path, exist_ok=True)
 
     if "-f" in command:
